@@ -18,10 +18,9 @@ namespace Isu.Services
 
         public Group AddGroup(string name)
         {
-            int lenghtGroup = 5;
+           /* int lenghtGroup = 5;
             int maxCourse = 4;
             int minCourse = 1;
-            var group = new Group(name);
             string firstLetters = name.Substring(0, 2);
             int count = name.Length;
             if (count != lenghtGroup)
@@ -29,19 +28,18 @@ namespace Isu.Services
 
             string subCourse = name.Substring(2, 1);
             string subLatters = name.Substring(3, 2);
-            if (!int.TryParse(subCourse, out int course) || !int.TryParse(subLatters, out int lastLetters))
+            bool chekCourse = int.TryParse(subCourse, out int course);
+            bool chekLastLetters = int.TryParse(subLatters, out int lastLetters);
+            if (!chekCourse || !chekLastLetters)
             {
                 throw new IsuException("Invalid name");
             }
             else if (firstLetters != "M3" || course > maxCourse || course < minCourse)
             {
                 throw new IsuException("Invalid name");
-            }
-            else
-            {
-                _studentGroup.Add(group);
-            }
-
+            }*/
+            var group = new Group(name);
+            _studentGroup.Add(group);
             return group;
         }
 
