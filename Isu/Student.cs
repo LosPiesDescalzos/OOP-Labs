@@ -4,7 +4,7 @@ namespace Isu.Services
 {
     public class Student
     {
-        private int _id;
+        private static int _id;
         public Student(string name)
         {
             Name = name;
