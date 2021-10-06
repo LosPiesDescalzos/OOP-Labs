@@ -9,7 +9,7 @@ namespace Shops
         private static int _id = 0;
         public Product(string name)
         {
-            Id = _id;
+            Id = _id++;
             Name = name;
          }
 

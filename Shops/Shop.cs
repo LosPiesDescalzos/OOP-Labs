@@ -11,7 +11,7 @@ namespace Shops
         public Shop(string name)
         {
             Name = name;
-            Id = ++_id;
+            Id = _id++;
         }
 
         public List<ShopProduct> ShopProducts { get; set; } = new List<ShopProduct>();

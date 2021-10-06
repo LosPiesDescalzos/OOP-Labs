@@ -4,9 +4,9 @@ using Shops.Tools;
 
 namespace Shops
 {
-    public class ProductFeature
+    public class ProductItem
     {
-        public ProductFeature(int amount, int price)
+        public ProductItem(int amount, int price)
         {
             Amount = amount;
             Price = price;

@@ -6,13 +6,13 @@ namespace Shops
 {
   public class ShopProduct
   {
-    public ShopProduct(Product product, ProductFeature productFeature)
+    public ShopProduct(Product product, ProductItem productItem)
     {
       Product = product;
-      ProductFeature = productFeature;
+      ProductItem = productItem;
     }
 
     public Product Product { get; set; }
-    public ProductFeature ProductFeature { get; set; }
+    public ProductItem ProductItem { get; set; }
   }
 }

@@ -11,7 +11,7 @@ namespace Shops
         {
             Name = name;
             Money = money;
-            Id = ++_id;
+            Id = _id++;
         }
 
         public string Name { get; set; }

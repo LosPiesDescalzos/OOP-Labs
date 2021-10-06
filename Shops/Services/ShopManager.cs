@@ -27,6 +27,7 @@ namespace Shops
 
         public Person AddPerson(string name, int money)
         {
+            if (money < 0) throw new ShopException("Error. Money < 0");
             var per = new Person(name, money);
             Person.Add(per);
             return per;
@@ -34,6 +35,8 @@ namespace Shops
 
         public void AddShopProduct(Shop shop, Product product, int amount, int price)
         {
+            if (amount <= 0) throw new ShopException("Error. Amount of product <= 0");
+            if (price < 0) throw new ShopException("Error. Price of product < 0");
             bool addProduct = true;
             foreach (Shop sh in AllShops.ToList())
             {
@@ -43,7 +46,7 @@ namespace Shops
                     {
                         if (shopProduct.Product.Id == product.Id)
                         {
-                            shopProduct.ProductFeature.Amount += amount;
+                            shopProduct.ProductItem.Amount += amount;
                             addProduct = false;
                         }
                     }
@@ -54,7 +57,7 @@ namespace Shops
                         {
                             if (pr.Id == product.Id)
                             {
-                                var productFeature = new ProductFeature(amount, price);
+                                var productFeature = new ProductItem(amount, price);
                                 var shopProduct = new ShopProduct(pr, productFeature);
                                 sh.ShopProducts.Add(shopProduct);
                             }
@@ -66,13 +69,14 @@ namespace Shops
 
         public void ChangeProductPrice(Shop shop, Product product, int newPrice)
         {
+            if (newPrice < 0) throw new ShopException("Error. New price of product < 0");
             foreach (Shop sh in AllShops)
             {
                 foreach (ShopProduct pr in sh.ShopProducts)
                 {
                     if ((sh.Id == shop.Id) && (pr.Product.Id == product.Id))
                     {
-                        pr.ProductFeature.Price = newPrice;
+                        pr.ProductItem.Price = newPrice;
                     }
                 }
             }
@@ -80,17 +84,18 @@ namespace Shops
 
         public Shop FindMinShopPrice(Product product, int countProducts)
         {
+            if (countProducts <= 0) throw new ShopException("Error. Count of product <= 0");
             int minPrice = int.MaxValue;
             Shop nedeedShop = null;
             foreach (Shop sh in AllShops)
             {
                 foreach (ShopProduct pr in sh.ShopProducts)
                 {
-                    if ((countProducts >= pr.ProductFeature.Amount) && (pr.Product.Id == product.Id))
+                    if ((countProducts >= pr.ProductItem.Amount) && (pr.Product.Id == product.Id))
                     {
-                        if (pr.ProductFeature.Price < minPrice)
+                        if (pr.ProductItem.Price < minPrice)
                         {
-                            minPrice = pr.ProductFeature.Price;
+                            minPrice = pr.ProductItem.Price;
                             nedeedShop = sh;
                         }
                     }
@@ -100,61 +105,34 @@ namespace Shops
             return nedeedShop;
         }
 
-        public int Balance(Person person, Shop shop, Product product, int countProducts)
-        {
-            int balanceBefore = 0;
-            int balanceAfter = 0;
-            int buy = 0;
-            foreach (Person pr in Person)
-            {
-                if (pr.Id == person.Id)
-                {
-                    balanceBefore = pr.Money;
-                }
-            }
-
-            foreach (Shop sh in AllShops)
-            {
-                foreach (ShopProduct pr in sh.ShopProducts)
-                {
-                    if ((sh.Id == shop.Id) && (pr.Product.Id == product.Id))
-                    {
-                        buy += pr.ProductFeature.Price * countProducts;
-                    }
-                }
-            }
-
-            balanceAfter = balanceBefore - buy;
-            foreach (Person pr in Person)
-            {
-                if (pr.Id == person.Id)
-                {
-                    pr.Money = balanceAfter;
-                }
-            }
-
-            return balanceAfter;
-        }
-
         public bool CanBuy(Person person, Product product, Shop shop, int productCount)
         {
+            if (productCount <= 0) throw new ShopException("Error. Count of product <= 0");
             bool enough = false;
+            int balance = 0;
             int neddedBuy = 0;
+            foreach (Person pr in Person)
+            {
+                if (pr.Id == person.Id)
+                {
+                   balance = pr.Money;
+                }
+            }
+
             foreach (Shop sh in AllShops)
             {
                 foreach (ShopProduct pr in sh.ShopProducts)
                 {
-                    if ((sh.Id == shop.Id) && (pr.Product.Id == product.Id) && (pr.ProductFeature.Amount >= productCount))
+                    if ((sh.Id == shop.Id) && (pr.Product.Id == product.Id) && (pr.ProductItem.Amount >= productCount))
                     {
-                        neddedBuy = pr.ProductFeature.Price * productCount;
-                        if (Balance(person, shop, product, productCount) < neddedBuy)
+                        neddedBuy = pr.ProductItem.Price * productCount;
+                        if (balance < neddedBuy)
                         {
                             enough = false;
                         }
                         else
                         {
                             enough = true;
-                            throw new ShopException("you don't have enough money");
                         }
                     }
                 }
@@ -165,20 +143,26 @@ namespace Shops
 
         public void Buying(Person person, Product product, Shop shop, int productCount)
         {
-            int moneyBuy = 0;
+            if (productCount <= 0) throw new ShopException("Error. Count of product <= 0");
             foreach (Shop sh in AllShops)
             {
-                foreach (ShopProduct pr in sh.ShopProducts)
+                if (sh.Id == shop.Id)
                 {
-                    if (CanBuy(person, product, shop, productCount))
+                    foreach (ShopProduct pr in sh.ShopProducts)
                     {
-                        pr.ProductFeature.Amount -= productCount;
-                        moneyBuy = productCount * pr.ProductFeature.Price;
-                        foreach (Person per in Person)
+                        if (pr.Product.Id == product.Id)
                         {
-                            if (per.Id == person.Id)
+                            foreach (Person per in Person)
                             {
-                                per.Money -= moneyBuy;
+                                if (per.Id == person.Id)
+                                {
+                                    if (CanBuy(person, product, shop, productCount))
+                                    {
+                                        pr.ProductItem.Amount -= productCount;
+                                        int moneyBuy = productCount * pr.ProductItem.Price;
+                                        per.Money -= moneyBuy;
+                                    }
+                                }
                             }
                         }
                     }

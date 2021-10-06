@@ -67,16 +67,6 @@ namespace Shops.Tests
         }
         
         [Test]
-        public void CheckBalance()
-        {
-            Person person = _shopManager.AddPerson("Misha", 5080);
-            Shop shop = _shopManager.AddShop("Lenta");
-            Product product = _shopManager.AddProduct("Apple");
-            _shopManager.AddShopProduct(shop, product, 20, 80);
-            int balance = _shopManager.Balance(person, shop, product, 5);
-        }
-        
-        [Test]
         public void CanPersonBuy()
         {
             Person person = _shopManager.AddPerson("Misha", 170);
