@@ -6,15 +6,14 @@ namespace IsuExtra
 {
     public class GroupSchedule
     {
-        public GroupSchedule(Group group, Pair pair, DayOfWeek day)
+        public GroupSchedule(Group group, DaySchedule daySchedule)
         {
             Group = group;
-            Pair = pair;
-            Day = day;
+            DaySchedules = daySchedule;
         }
 
         public Group Group { get; }
-        public Pair Pair { get; }
-        public DayOfWeek Day { get; }
+
+        public DaySchedule DaySchedules { get; }
     }
 }

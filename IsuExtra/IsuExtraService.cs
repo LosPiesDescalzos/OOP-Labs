@@ -1,23 +1,21 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Isu.Services;
 using Isu.Tools;
+using IsuExtra.Services;
 
 namespace IsuExtra
 {
-    public class IsuExtraService
+    public class IsuExtraService : IIsuExtraService
     {
         public IsuExtraService() { }
         public List<Teacher> Teacher { get; } = new List<Teacher>();
-        public List<GroupSchedule> GroupSchedule { get; } = new List<GroupSchedule>();
-        public List<Pair> Pairs { get; } = new List<Pair>();
-        public List<OGNPgroup> Groups { get; } = new List<OGNPgroup>();
-        public List<DisciplineSchedule> OgnpSchedule { get; } = new List<DisciplineSchedule>();
-        public List<MegafacultyDiscipline> Discipline { get; } = new List<MegafacultyDiscipline>();
-
+        public List<GroupSchedule> GroupSchedules { get; } = new List<GroupSchedule>();
+        public List<OgnpGroupSchedule> OgnpGroupSchedules { get; } = new List<OgnpGroupSchedule>();
+        public List<MegafacultyDiscipline> Disciplines { get; } = new List<MegafacultyDiscipline>();
         public IsuServices IsuServices { get; } = new IsuServices(20);
-
         public Student AddStudent(Group group, string studentName)
         {
             return IsuServices.AddStudent(group, studentName);
@@ -28,6 +26,20 @@ namespace IsuExtra
             return IsuServices.AddGroup(name);
         }
 
+        public OgnpGroup AddOgnpGroup(string name, MegafacultyDiscipline megafaculty)
+        {
+            OgnpGroup group = new OgnpGroup(name);
+            foreach (var dc in Disciplines)
+            {
+                if (dc.Letter == megafaculty.Letter)
+                {
+                    dc.OgnpGroups.Add(group);
+                }
+            }
+
+            return group;
+        }
+
         public Teacher AddTeacher(string name)
         {
             var teacher = new Teacher(name);
@@ -35,63 +47,80 @@ namespace IsuExtra
             return teacher;
         }
 
-        public Pair AddPair(string name, Teacher teacher, string classroom, int numberPair)
+       /* public void AddDaySchedule(string name, Teacher teacher, string classroom, int numberPair, DayOfWeek day)
         {
-            var pair = new Pair(name, teacher, classroom, numberPair);
-            Pairs.Add(pair);
-            return pair;
+            Pair pair = new Pair(name, teacher, classroom, numberPair);
+            DaySchedule daySchedule = new DaySchedule(pair, day);
+        }*/
+
+        public void AddGroupSchedule(Group group, string name, Teacher teacher, string classroom, int numberPair, DayOfWeek day)
+        {
+            Pair pair = new Pair(name, teacher, classroom, numberPair);
+            DaySchedule daySchedule = new DaySchedule(pair, day);
+            GroupSchedule groupSchedule = new GroupSchedule(group, daySchedule);
+            GroupSchedules.Add(groupSchedule);
         }
 
-        public GroupSchedule AddGroupSchedule(Pair pair, DayOfWeek day, Group group)
+        public void AddOgnpGroupSchedule(MegafacultyDiscipline megafaculty, OgnpGroup group, string name, Teacher teacher, string classroom, int numberPair, DayOfWeek day)
         {
-            var groupSchedule = new GroupSchedule(group, pair, day);
-            GroupSchedule.Add(groupSchedule);
-            return groupSchedule;
+            foreach (MegafacultyDiscipline faculty in Disciplines)
+            {
+                if (faculty.Name == megafaculty.Name)
+                {
+                    foreach (OgnpGroup gr in faculty.OgnpGroups.ToList())
+                    {
+                        if (group.Name == group.Name)
+                        {
+                            Pair pair = new Pair(name, teacher, classroom, numberPair);
+                            DaySchedule daySchedule = new DaySchedule(pair, day);
+                            OgnpGroupSchedule ognpGroupSchedule = new OgnpGroupSchedule(group, daySchedule);
+                            OgnpGroupSchedules.Add(ognpGroupSchedule);
+                        }
+                    }
+                }
+            }
         }
 
         public MegafacultyDiscipline AddDiscipline(string faculty, string letter, string name)
         {
             var discipline = new MegafacultyDiscipline(faculty, letter, name);
-            Discipline.Add(discipline);
+            Disciplines.Add(discipline);
             return discipline;
         }
 
-        public DisciplineSchedule AddDisciplineSchedule(MegafacultyDiscipline discipline, string classRoom, int numberPair, Teacher teacher, DayOfWeek day)
-        {
-            var ognpSchedule = new DisciplineSchedule(discipline, classRoom, numberPair, teacher, day);
-            OgnpSchedule.Add(ognpSchedule);
-            return ognpSchedule;
-        }
-
-        public OGNPgroup AddOGNPGroup(string name)
-        {
-            var group = new OGNPgroup(name);
-            Groups.Add(group);
-            return group;
-        }
-
-        public void AddStudentToOGNPGroup(GroupSchedule groupSchedule, DisciplineSchedule disciplineSchedule, Student student, OGNPgroup ognpGroup, Group group)
+        public void AddStudentToOGNPGroup(Student student, OgnpGroup ognpGroup, Group group)
         {
             string firstLetter = group.Name.Substring(0, 1);
-            if (((groupSchedule.Day != disciplineSchedule.Day) ||
-                 (groupSchedule.Pair.NumberPair != disciplineSchedule.NumberPair)) &&
-                (disciplineSchedule.Discipline.Letter != firstLetter))
+            foreach (var gr in GroupSchedules)
             {
-                ognpGroup.OGNPStudents.Add(student);
+                foreach (var ogn in OgnpGroupSchedules)
+                {
+                    if ((gr.DaySchedules.DayOfWeek != ogn.DaySchedules.DayOfWeek) ||
+                        (gr.DaySchedules.Pair.NumberPair != ogn.DaySchedules.Pair.NumberPair))
+                    {
+                        ognpGroup.GetOGNPStudent().Add(student);
+                    }
+                }
             }
         }
 
-        public void DeleteStudentFromOGNPGroup(Student student, OGNPgroup group)
+        public void DeleteStudentFromOGNPGroup(Student student, OgnpGroup group, MegafacultyDiscipline megafaculty)
         {
-            foreach (var gr in Groups)
+            foreach (var dc in Disciplines)
             {
-                if (group.Name == gr.Name)
+                if (dc.Name == megafaculty.Name)
                 {
-                    foreach (Student st in gr.OGNPStudents.ToList())
+                    foreach (OgnpGroup gr in dc.OgnpGroups)
                     {
-                        if (st.Id == student.Id)
+                        if (group.Name == gr.Name)
                         {
-                            group.OGNPStudents.Remove(st);
+                            foreach (Student st in gr.GetOGNPStudent().ToList())
+                            {
+                                if (st.Id == student.Id)
+                                {
+                                    group.GetOGNPStudent().Remove(st);
+                                }
+                            }
                         }
                     }
                 }

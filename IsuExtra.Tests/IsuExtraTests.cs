@@ -21,7 +21,7 @@ namespace IsuExtra.Tests
             public void AddDiscipline()
             {
                 MegafacultyDiscipline discipline = _isuExtraService.AddDiscipline("FITIP", "M", "Programming");
-                Assert.Contains(discipline, _isuExtraService.Discipline.ToList());
+                Assert.Contains(discipline, _isuExtraService.Disciplines.ToList());
             }
             
             [Test]
@@ -30,74 +30,54 @@ namespace IsuExtra.Tests
                 Teacher teacher1 = _isuExtraService.AddTeacher("Povyshev");
                 Assert.Contains(teacher1, _isuExtraService.Teacher.ToList());
             }
-            
-            [Test]
-            public void AddPair()
-            {
-                Teacher teacher1 = _isuExtraService.AddTeacher("Mayatin");
-                Assert.Contains(teacher1, _isuExtraService.Teacher.ToList());
-                Pair pair1 = _isuExtraService.AddPair("OS", teacher1, "312", 1);
-                Assert.Contains(pair1, _isuExtraService.Pairs.ToList());
-            }
-            
+
             [Test]
             public void AddStudentToGroup()
             {
                 Group gr = _isuExtraService.AddGroup("M3218");
                 Student st = _isuExtraService.AddStudent(gr, "Max");
+                Assert.Contains(st, gr.Students);
             }
             
             [Test]
             public void AddGroupSchedule()
             {
-                Group gr = _isuExtraService.AddGroup("M3203");
-                Student st = _isuExtraService.IsuServices.AddStudent(gr, "Dima");
+                Group group = _isuExtraService.AddGroup("M3203");
                 Teacher teacher1 = _isuExtraService.AddTeacher("Mayatin");
-                Pair pair1 = _isuExtraService.AddPair("OS", teacher1, "312", 1);
                 DayOfWeek day = DayOfWeek.Monday;
-                GroupSchedule groupSchedule1 = _isuExtraService.AddGroupSchedule(pair1, day, gr);
-            }
-
-            [Test]
-            public void AddDisciplineSchedule()
-            {
-                MegafacultyDiscipline discipline = _isuExtraService.AddDiscipline("ORGN", "R", "Robots");
-                Teacher teacher1 = _isuExtraService.AddTeacher("Malyshev");
-                DayOfWeek day = DayOfWeek.Monday;
-                DisciplineSchedule disciplineSchedule =
-                    _isuExtraService.AddDisciplineSchedule(discipline, "426", 2, teacher1, day);
+                _isuExtraService.AddGroupSchedule(group, "OOP", teacher1, "132", 1, day);
             }
             
             [Test]
-            public void AddOGNPGroup()
+            public void AddOGNPGroupSchedule()
             {
-                OGNPgroup gr1 = _isuExtraService.AddOGNPGroup("group1");
-            }
-
-           [Test]
-            public void AddStudentToOGNPGroup()
-            {
-                OGNPgroup gr2 = _isuExtraService.AddOGNPGroup("group2");
-                
-                MegafacultyDiscipline discipline = _isuExtraService.AddDiscipline("ORGN", "R", "Robots");
-                Teacher teacher1 = _isuExtraService.AddTeacher("Malyshev");
+                MegafacultyDiscipline discipline = _isuExtraService.AddDiscipline("FITIP", "M", "OSI");
+                OgnpGroup group = _isuExtraService.AddOgnpGroup("Group1", discipline);
+                Teacher teacher1 = _isuExtraService.AddTeacher("Mayatin");
                 DayOfWeek day = DayOfWeek.Monday;
-                DisciplineSchedule disciplineSchedule =
-                    _isuExtraService.AddDisciplineSchedule(discipline, "426", 2, teacher1, day);
+                _isuExtraService.AddOgnpGroupSchedule( discipline, group, "OOP", teacher1, "132", 1, day);
+            }
+            
+            [Test]
+            public void AddStudentOGNPGroup()
+            {
+                Group group = _isuExtraService.AddGroup("M3218");
+                Teacher teacher1 = _isuExtraService.AddTeacher("Mayatin");
+                DayOfWeek day1 = DayOfWeek.Thursday;
+                _isuExtraService.AddGroupSchedule(group, "OOP", teacher1, "132", 1, day1);
                 
-                Group gr = _isuExtraService.AddGroup("M3203");
-                Student st = _isuExtraService.AddStudent(gr, "Dima");
-                Teacher teacher2 = _isuExtraService.AddTeacher("Mayatin");
-                Pair pair1 = _isuExtraService.AddPair("OS", teacher2, "312", 4);
-                DayOfWeek day2 = DayOfWeek.Thursday;
-                GroupSchedule groupSchedule1 = _isuExtraService.AddGroupSchedule(pair1, day2, gr);
-               
-                _isuExtraService.AddStudentToOGNPGroup(groupSchedule1, disciplineSchedule, st, gr2, gr);
-                Assert.IsNotEmpty(gr2.OGNPStudents);
-                Assert.Contains(st, gr2.OGNPStudents);
-
-               _isuExtraService.DeleteStudentFromOGNPGroup(st, gr2);
-                Assert.IsEmpty(gr2.OGNPStudents);
+                Student st = _isuExtraService.AddStudent(group, "Max");
+                
+                MegafacultyDiscipline discipline = _isuExtraService.AddDiscipline("FITIP", "M", "OSI");
+                OgnpGroup ognpGroup = _isuExtraService.AddOgnpGroup("Group1", discipline);
+                DayOfWeek day2 = DayOfWeek.Monday;
+                _isuExtraService.AddOgnpGroupSchedule( discipline, ognpGroup, "OOP", teacher1, "132", 1, day2);
+                
+                _isuExtraService.AddStudentToOGNPGroup(st, ognpGroup, group);
+                Assert.Contains(st, ognpGroup.GetOGNPStudent());
+                
+                _isuExtraService.DeleteStudentFromOGNPGroup(st, ognpGroup, discipline);
+                Assert.IsEmpty(ognpGroup.GetOGNPStudent());
             }
     }
 }

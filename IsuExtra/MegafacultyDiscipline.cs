@@ -15,5 +15,7 @@ namespace IsuExtra
         public string Name { get; }
         public string Letter { get; }
         public string Discipline { get; }
+
+        public List<OgnpGroup> OgnpGroups { get; set; } = new List<OgnpGroup>();
     }
 }
