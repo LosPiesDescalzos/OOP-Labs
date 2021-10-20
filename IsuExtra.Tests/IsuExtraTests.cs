@@ -46,6 +46,7 @@ namespace IsuExtra.Tests
                 Teacher teacher1 = _isuExtraService.AddTeacher("Mayatin");
                 DayOfWeek day = DayOfWeek.Monday;
                 _isuExtraService.AddGroupSchedule(group, "OOP", teacher1, "132", 1, day);
+                Assert.IsNotEmpty(_isuExtraService.GroupSchedules);
             }
             
             [Test]
@@ -56,10 +57,12 @@ namespace IsuExtra.Tests
                 Teacher teacher1 = _isuExtraService.AddTeacher("Mayatin");
                 DayOfWeek day = DayOfWeek.Monday;
                 _isuExtraService.AddOgnpGroupSchedule( discipline, group, "OOP", teacher1, "132", 1, day);
+                Assert.IsNotEmpty(_isuExtraService.OgnpGroupSchedules);
+                
             }
             
             [Test]
-            public void AddStudentOGNPGroup()
+            public void AddAndDeleteStudentOGNPGroup()
             {
                 Group group = _isuExtraService.AddGroup("M3218");
                 Teacher teacher1 = _isuExtraService.AddTeacher("Mayatin");

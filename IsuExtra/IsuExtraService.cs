@@ -47,12 +47,6 @@ namespace IsuExtra
             return teacher;
         }
 
-       /* public void AddDaySchedule(string name, Teacher teacher, string classroom, int numberPair, DayOfWeek day)
-        {
-            Pair pair = new Pair(name, teacher, classroom, numberPair);
-            DaySchedule daySchedule = new DaySchedule(pair, day);
-        }*/
-
         public void AddGroupSchedule(Group group, string name, Teacher teacher, string classroom, int numberPair, DayOfWeek day)
         {
             Pair pair = new Pair(name, teacher, classroom, numberPair);
