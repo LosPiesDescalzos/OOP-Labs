@@ -4,31 +4,31 @@ using Backups.ZipStrategies;
 
 namespace Backups
 {
-    public class Repository
+    public class Repository : IRepository
     {
-        public Repository(string path)
-        {
-            Path = path;
-        }
+    public Repository(string path)
+    {
+        Path = path;
+    }
 
-        public string Path { get; }
+    public string Path { get; }
 
-        public void CreateDirectory()
+    public void CreateDirectory()
+    {
+        if (!Directory.Exists(Path))
         {
-            if (!Directory.Exists(Path))
-            {
-                DirectoryInfo rep = Directory.CreateDirectory(Path);
-            }
+            DirectoryInfo rep = Directory.CreateDirectory(Path);
         }
+    }
 
-        public List<Storage> CreateLocalBackup(IAlgorithm algorithm, List<JobObject> jobObjects, int id)
-        {
-            return algorithm.LocalBackup(jobObjects, id, Path);
-        }
+    public List<Storage> CreateLocalBackup(IAlgorithm algorithm, List<JobObject> jobObjects, int id)
+    {
+        return algorithm.LocalBackup(jobObjects, id, Path);
+    }
 
-        public List<Storage> CreateVirtualBackup(IAlgorithm algorithm, List<JobObject> jobObjects, int id)
-        {
-            return algorithm.VirtualBackup(jobObjects, id);
-        }
+    public List<Storage> CreateVirtualBackup(IAlgorithm algorithm, List<JobObject> jobObjects, int id)
+    {
+        return algorithm.VirtualBackup(jobObjects, id);
+    }
     }
 }

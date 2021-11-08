@@ -4,18 +4,18 @@ namespace Backups
 {
     public interface IBackupManager
     {
-        public Repository Repository { get; set; }
-        public BackupJob BackupJob { get; set; }
+        Repository Repository { get; set; }
+        BackupJob BackupJob { get; set; }
 
-        public Repository AddRepository(string path);
+        Repository AddRepository(string path);
 
-        public BackupJob AddBackupJob();
+        BackupJob AddBackupJob();
 
-        public void AddFileBackupJob(string path);
+        void AddFileBackupJob(string path);
 
-        public void DeleteFileBackupJob(string path);
+        void DeleteFileBackupJob(string path);
 
-        public void GoLocalBackup(IAlgorithm algorithm);
-        public void GoVirtualBackup(IAlgorithm algorithm);
+        void GoLocalBackup(IAlgorithm algorithm);
+        void GoVirtualBackup(IAlgorithm algorithm);
     }
 }
