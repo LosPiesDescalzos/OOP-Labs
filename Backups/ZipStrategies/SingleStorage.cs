@@ -23,5 +23,19 @@ namespace Backups.ZipStrategies
             storages.Add(storage);
             return storages;
         }
+
+        public List<Storage> VirtualBackup(List<JobObject> jobObjects, int id)
+        {
+            var storages = new List<Storage>();
+            var storage = new Storage();
+            string i = id.ToString();
+            foreach (JobObject jobObject in jobObjects)
+            {
+                storage.JobObjects.Add(jobObject);
+            }
+
+            storages.Add(storage);
+            return storages;
+        }
     }
 }

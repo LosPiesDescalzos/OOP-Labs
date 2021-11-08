@@ -13,9 +13,22 @@ namespace Backups
 
         public string Path { get; }
 
-        public List<Storage> CreateBackup(IAlgorithm algorithm, List<JobObject> jobObjects, int id)
+        public void CreateDirectory()
+        {
+            if (!Directory.Exists(Path))
+            {
+                DirectoryInfo rep = Directory.CreateDirectory(Path);
+            }
+        }
+
+        public List<Storage> CreateLocalBackup(IAlgorithm algorithm, List<JobObject> jobObjects, int id)
         {
             return algorithm.LocalBackup(jobObjects, id, Path);
+        }
+
+        public List<Storage> CreateVirtualBackup(IAlgorithm algorithm, List<JobObject> jobObjects, int id)
+        {
+            return algorithm.VirtualBackup(jobObjects, id);
         }
     }
 }

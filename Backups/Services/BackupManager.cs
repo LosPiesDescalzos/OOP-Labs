@@ -5,7 +5,7 @@ using Backups.ZipStrategies;
 
 namespace Backups
 {
-    public class BackupManager
+    public class BackupManager : IBackupManager
     {
         public Repository Repository { get; set; }
         public BackupJob BackupJob { get; set; }
@@ -14,7 +14,7 @@ namespace Backups
         {
             var repository = new Repository(path);
             Repository = repository;
-            DirectoryInfo rep = Directory.CreateDirectory(path);
+            Repository.CreateDirectory();
             return Repository;
         }
 
@@ -42,13 +42,22 @@ namespace Backups
             }
         }
 
-        public void GoBackup(IAlgorithm algorithm)
+        public void GoLocalBackup(IAlgorithm algorithm)
         {
             var restorePoint = new RestorePoint();
             List<JobObject> jobObjects = BackupJob.JobObjects;
-            List<Storage> storages = Repository.CreateBackup(algorithm, jobObjects, restorePoint.Id);
-            restorePoint.Storages.AddRange(storages);
-            BackupJob.RestorePoints.Add(restorePoint);
+            List<Storage> storages = Repository.CreateLocalBackup(algorithm, jobObjects, restorePoint.Id);
+            restorePoint.GetStorages().AddRange(storages);
+            BackupJob.GetRestorePoints().Add(restorePoint);
+        }
+
+        public void GoVirtualBackup(IAlgorithm algorithm)
+        {
+            var restorePoint = new RestorePoint();
+            List<JobObject> jobObjects = BackupJob.JobObjects;
+            List<Storage> storages = Repository.CreateVirtualBackup(algorithm, jobObjects, restorePoint.Id);
+            restorePoint.GetStorages().AddRange(storages);
+            BackupJob.GetRestorePoints().Add(restorePoint);
         }
     }
 }

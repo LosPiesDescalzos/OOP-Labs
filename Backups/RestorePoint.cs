@@ -14,6 +14,11 @@ namespace Backups
 
         public DateTime DateCreate { get; }
         public int Id { get; }
-        public List<Storage> Storages { get; } = new List<Storage>();
+        private List<Storage> Storages { get; } = new List<Storage>();
+
+        public List<Storage> GetStorages()
+        {
+            return Storages;
+        }
     }
 }
