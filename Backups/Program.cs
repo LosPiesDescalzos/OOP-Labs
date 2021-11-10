@@ -1,9 +1,19 @@
-﻿namespace Backups
+﻿using Backups.ZipStrategies;
+
+namespace Backups
 {
-    internal class Program
+    public class Program
     {
-        private static void Main()
+        public static void Main()
         {
+            var backupManager = new BackupManager();
+
+            Repository repository = backupManager.AddRepository("../../../BackupsDir");
+            BackupJob job = backupManager.AddBackupJob();
+            backupManager.AddFileBackupJob("../../../Files/FileA");
+            backupManager.AddFileBackupJob("../../../Files/FileB");
+            var singleStorage = new SingleStorage();
+            backupManager.GoVirtualBackup(singleStorage);
         }
     }
 }
