@@ -10,7 +10,7 @@ namespace Backups
             Data = File.ReadAllText(path);
         }
 
-        public string Path { get; }
+        public string Path { get; set; }
         public string Data { get; }
     }
 }

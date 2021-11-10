@@ -4,7 +4,6 @@ namespace Backups.ZipStrategies
 {
     public interface IAlgorithm
     {
-        List<Storage> LocalBackup(List<JobObject> jobObjects, int id, string pathRepository);
-        List<Storage> VirtualBackup(List<JobObject> jobObjects, int id);
+        List<Storage> Backup(List<JobObject> jobObjects, int id);
     }
 }

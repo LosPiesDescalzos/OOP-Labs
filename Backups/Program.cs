@@ -13,7 +13,7 @@ namespace Backups
             backupManager.AddFileBackupJob("../../../Files/FileA");
             backupManager.AddFileBackupJob("../../../Files/FileB");
             var singleStorage = new SingleStorage();
-            backupManager.GoLocalBackup(singleStorage);
+            backupManager.GoVirtualBackup(singleStorage);
         }
     }
 }

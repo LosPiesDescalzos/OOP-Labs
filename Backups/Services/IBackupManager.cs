@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Backups.ZipStrategies;
 
 namespace Backups
@@ -16,6 +17,5 @@ namespace Backups
         void DeleteFileBackupJob(string path);
 
         void GoLocalBackup(IAlgorithm algorithm);
-        void GoVirtualBackup(IAlgorithm algorithm);
     }
 }

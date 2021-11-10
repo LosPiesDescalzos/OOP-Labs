@@ -14,7 +14,7 @@ namespace Backups.Tests
         }
 
         [Test]
-        public void SplitLocalBackup()
+        public void SplitBackup()
         {
             Repository repository = _backupManager.AddRepository("../../../BackupsDir");
             BackupJob job = _backupManager.AddBackupJob();
@@ -35,17 +35,17 @@ namespace Backups.Tests
         }
         
         [Test]
-        public void SingleVirtualBackup()
+        public void SingleBackup()
         {
             Repository repository = _backupManager.AddRepository("../../../BackupsDir");
             BackupJob job = _backupManager.AddBackupJob();
             
             _backupManager.AddFileBackupJob("../../../Files/FileA");
             _backupManager.AddFileBackupJob("../../../Files/FileB");
-            _backupManager.GoVirtualBackup(new SplitStorage());
+            _backupManager.GoLocalBackup(new SplitStorage());
             
             _backupManager.DeleteFileBackupJob("../../../Files/FileB");
-            _backupManager.GoVirtualBackup(new SplitStorage());
+            _backupManager.GoLocalBackup(new SplitStorage());
             
             Assert.AreEqual(_backupManager.BackupJob.GetRestorePoints().Count, 2);
             Assert.AreEqual(_backupManager.BackupJob.GetRestorePoints()[0].GetStorages().Count, 2);
