@@ -10,7 +10,6 @@ namespace Banks
         private string _password;
         private string _surname;
         private string _pasport = null;
-        private string _status;
         public ClientBuilder SetNameSurname(string name, string surname)
         {
             _name = name;
@@ -27,21 +26,12 @@ namespace Banks
         public ClientBuilder SetPasport(string pasport)
         {
             _pasport = pasport;
-            if (pasport != null)
-            {
-                _status = "good";
-            }
-            else
-            {
-                _status = "bad";
-            }
-
             return this;
         }
 
         public Client GetClient()
         {
-            return new Client(_name, _password, _surname, _pasport, _status);
+            return new Client(_name, _password, _surname, _pasport);
         }
     }
 }

@@ -6,13 +6,12 @@ namespace Banks
     public class Client
     {
         private int _id = 1;
-        public Client(string name, string password, string surname, string pasport, string status)
+        public Client(string name, string password, string surname, string pasport)
         {
             Name = name;
             Password = password;
             Surname = surname;
             Pasport = pasport;
-            Status = status;
             Id = _id++;
         }
 
@@ -28,6 +27,17 @@ namespace Banks
         public void AddMessage(string message)
         {
             Messages.Add(message);
+        }
+
+        public bool SetStatus(string pasport)
+        {
+            bool status = true;
+            if (pasport == null)
+            {
+                status = false;
+            }
+
+            return status;
         }
     }
 }
