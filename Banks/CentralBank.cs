@@ -15,7 +15,7 @@ namespace Banks
 
         public List<Bank> Banks { get; }
 
-        public List<CanselTransaction> Transactions { get; set; } = new List<CanselTransaction>();
+        public List<CancelTransaction> Transactions { get; set; } = new List<CancelTransaction>();
         public DateTime CurrentDate { get; set; }
         public List<IObserver> Observers { get; }
 
@@ -59,29 +59,23 @@ namespace Banks
             }
         }
 
-        public Bank AddBank(string name, double commision, double debitPercent, List<DepositPercent> depositPrecent, double maxMoney)
+        public Bank AddBank(string name, double commision, double debitPercent, List<DepositPercent> depositPerecent, double maxMoney)
         {
             var builder = new BankBuilder();
-            var newBank = new Bank();
-            builder.BuildBank(name);
-            builder.CreditCommision(commision);
-            builder.DebitPercent(debitPercent);
-            builder.DebitMaxValue(maxMoney);
-            builder.DepositPercent(depositPrecent);
-            newBank = builder.GetBank();
-            Banks.Add(newBank);
-            return newBank;
+            builder.SetName(name).SetCommision(commision).SetDebitPercent(debitPercent).SetDepositPercent(depositPerecent).SetDebitMaxMoney(maxMoney);
+            Bank bank = builder.GetBank();
+            Banks.Add(bank);
+            return bank;
         }
 
         public Client AddClient(Bank bank, string name, string password, string surname, string passport)
         {
             var builder = new ClientBuilder();
-            var newClient = new Client();
-            builder.BuildClient(name, password, surname);
-            builder.BuildPasport(passport);
-            newClient = builder.GetClient();
-            bank.Clients.Add(newClient);
-            return newClient;
+
+            builder.SetNameSurname(name, surname).SetPassword(password).SetPasport(passport);
+            Client client = builder.GetClient();
+            bank.Clients.Add(client);
+            return client;
         }
 
         public void AddDebitAccount(string name, Bank thisBank, double money, Client thisClient, double maxMoney)
@@ -143,42 +137,34 @@ namespace Banks
            }
        }
 
-        public double ChangeCommision(Bank thisBank, double commision)
+        public void ChangeCommision(Bank thisBank, double commision)
         {
-            Bank neededBank = new Bank();
             foreach (Bank bank in Banks)
             {
                 if (bank.Name == thisBank.Name)
                 {
-                    neededBank = bank;
-                    neededBank.CreditCommision = commision;
+                    bank.CreditCommision = commision;
                     foreach (Client client in bank.Clients)
                     {
                         client.AddMessage("Your commision is changed");
                     }
                 }
             }
-
-            return neededBank.CreditCommision;
         }
 
-        public double ChangeDebitPercent(Bank thisBank, double percent)
+        public void ChangeDebitPercent(Bank thisBank, double percent)
         {
-            Bank neededBank = new Bank();
             foreach (Bank bank in Banks)
             {
                 if (bank.Name == thisBank.Name)
                 {
-                    neededBank = bank;
-                    neededBank.DebitPercent = percent;
+                    bank.DebitPercent = percent;
                     foreach (Client client in bank.Clients)
                     {
                         client.AddMessage("Your percent is changed");
                     }
                 }
             }
-
-            return neededBank.DebitPercent;
         }
 
         public void TransferMoney(Account accountFrom, Account accountTo, double money)
@@ -192,13 +178,13 @@ namespace Banks
 
         public void AddTransaction(double money, Account accFrom, Bank banks, Client clientFrom)
         {
-            CanselTransaction cansel = new CanselTransaction(money, accFrom, banks, clientFrom);
+            CancelTransaction cansel = new CancelTransaction(money, accFrom, banks, clientFrom);
             int id = Transactions.Count;
             cansel.Id = id++;
             Transactions.Add(cansel);
         }
 
-        public void CanselTransaction(Account account, int ident)
+        public void CancelTransaction(Account account, int ident)
         {
             foreach (var transaction in Transactions)
             {

@@ -9,9 +9,9 @@ namespace Banks
         public List<DepositPercent> Percents { get; } = new List<DepositPercent>();
         public CentralBank CentralBank { get; set; } = new CentralBank();
 
-        public Bank Bank { get; set; } = new Bank();
+        public Bank Bank { get; set; }
 
-        public Client NewClient { get; set; } = new Client();
+        public Client NewClient { get; set; }
 
         public void Start()
         {
@@ -243,8 +243,8 @@ namespace Banks
                         Console.WriteLine("Введите новую комиссию");
                         string newCommision = Console.ReadLine();
                         commision = Convert.ToDouble(newCommision);
-                        double com = CentralBank.ChangeCommision(Bank, commision);
-                        Console.WriteLine("Комиссия изменена. Теперь комиссия: {0}", com);
+                        CentralBank.ChangeCommision(Bank, commision);
+                        Console.WriteLine("Комиссия изменена. Теперь комиссия: {0}", Bank.CreditCommision);
                     }
 
                     if (answer == "2")
@@ -468,7 +468,7 @@ namespace Banks
                             {
                                 if (acc.Name == account)
                                 {
-                                    CentralBank.CanselTransaction(acc, id);
+                                    CentralBank.CancelTransaction(acc, id);
                                 }
                             }
                         }

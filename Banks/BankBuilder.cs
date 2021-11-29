@@ -6,48 +6,45 @@ namespace Banks
 {
     public class BankBuilder
     {
-        private Bank _bank = new Bank();
+        private string _name;
+        private double _creditCommision;
+        private double _debitPercent;
+        private double _debitMaxMoney;
+        private List<DepositPercent> _depositPercent;
 
-        public BankBuilder()
+        public BankBuilder SetName(string name)
         {
-            this.Reset();
+            _name = name;
+            return this;
         }
 
-        public void Reset()
+        public BankBuilder SetDebitPercent(double percent)
         {
-            this._bank = new Bank();
+                _debitPercent = percent;
+                return this;
         }
 
-        public void BuildBank(string name)
+        public BankBuilder SetDepositPercent(List<DepositPercent> percent)
         {
-            _bank.Name = name;
+            _depositPercent = percent;
+            return this;
         }
 
-        public void DebitPercent(double percent)
+        public BankBuilder SetDebitMaxMoney(double maxMoney)
         {
-                _bank.DebitPercent = percent;
+            _debitMaxMoney = maxMoney;
+            return this;
         }
 
-        public void DepositPercent(List<DepositPercent> depositPrecent)
+        public BankBuilder SetCommision(double commision)
         {
-            _bank.DepositPercents = depositPrecent;
-        }
-
-        public void DebitMaxValue(double maxvalue)
-        {
-            _bank.DebitMaxMoney = maxvalue;
-        }
-
-        public void CreditCommision(double percent)
-        {
-            _bank.CreditCommision = percent;
+            _creditCommision = commision;
+            return this;
         }
 
         public Bank GetBank()
         {
-            Bank result = this._bank;
-            this.Reset();
-            return result;
+            return new Bank(_name, _creditCommision, _debitPercent, _depositPercent, _debitMaxMoney);
         }
     }
 }

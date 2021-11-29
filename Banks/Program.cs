@@ -6,8 +6,8 @@ namespace Banks
     {
         private static void Main()
         {
-            ConsoleApplication consol = new ConsoleApplication();
-            consol.Start();
+            ConsoleApplication console = new ConsoleApplication();
+            console.Start();
         }
     }
 }

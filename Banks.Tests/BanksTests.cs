@@ -10,19 +10,19 @@ namespace Banks.Tests
         public class Tests
         {
             public CentralBank CentralBank = new CentralBank();
-            Bank bank = new Bank();
-            Client client = new Client();
-            Client client2 = new Client();
+            Bank bank;
+            Client client;
+            Client client2;
 
 
             [Test]
             public void AddBank()
             {
                 List<DepositPercent> depositPercents = new List<DepositPercent>();
-                                             DepositPercent depositPercent1 = new DepositPercent(10,100,10);
-                                             DepositPercent depositPercent2 = new DepositPercent(101,200,20);
-                                             depositPercents.Add(depositPercent1);
-                                             depositPercents.Add(depositPercent2);
+                DepositPercent depositPercent1 = new DepositPercent(10,100,10);
+                DepositPercent depositPercent2 = new DepositPercent(101,200,20);
+                depositPercents.Add(depositPercent1);
+                depositPercents.Add(depositPercent2);
                 string name = "Sber";
                 double commision = 10;
                 double debitPercent = 20;
@@ -39,27 +39,20 @@ namespace Banks.Tests
                 string name = "Kate";
                 string password = "123";
                 string surname = "Zharkova";
-                string passport = "123456";
+                string pasport = "123456";
                 
                 string name2 = "Max";
                 string password2 = "456";
                 string surname2 = "Shat";
-                string passport2 = null;
+                string pasport2 = null;
                 
-                client = CentralBank.AddClient(bank, name, password, surname, passport);
-                client2 = CentralBank.AddClient(bank, name2, password2, surname2, passport2);
+                client = CentralBank.AddClient(bank, name, password, surname, pasport);
+                client2 = CentralBank.AddClient(bank, name2, password2, surname2, pasport2);
                 
                 Assert.AreEqual( "good", client.Status);
                 Assert.AreEqual("bad", client2.Status);
-                foreach (var bank in CentralBank.Banks)
-                {
-                    if (bank.Name == this.bank.Name)
-                    {
-                       Assert.Contains(client, bank.Clients);
-                       Assert.Contains(client2, bank.Clients);
-                    }
-                }
-                
+                Assert.Contains(client, bank.Clients);
+                Assert.Contains(client2, bank.Clients);
             }
             
             [Test]

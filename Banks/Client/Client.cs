@@ -6,13 +6,13 @@ namespace Banks
     public class Client
     {
         private int _id = 1;
-        public Client()
+        public Client(string name, string password, string surname, string pasport, string status)
         {
-            Name = null;
-            Password = null;
-            Surname = null;
-            Pasport = null;
-            Status = "bad";
+            Name = name;
+            Password = password;
+            Surname = surname;
+            Pasport = pasport;
+            Status = status;
             Id = _id++;
         }
 

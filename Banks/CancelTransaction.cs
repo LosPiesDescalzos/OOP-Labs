@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 namespace Banks
 {
-    public class CanselTransaction
+    public class CancelTransaction
     {
         private int _id = 0;
-        public CanselTransaction(double money, Account account, Bank bank, Client client)
+        public CancelTransaction(double money, Account account, Bank bank, Client client)
         {
             Id = _id;
             Money = money;

@@ -6,39 +6,42 @@ namespace Banks
 {
     public class ClientBuilder : IClientBuilder
     {
-        private Client _client = new Client();
-
-        public ClientBuilder()
+        private string _name;
+        private string _password;
+        private string _surname;
+        private string _pasport = null;
+        private string _status;
+        public ClientBuilder SetNameSurname(string name, string surname)
         {
-            this.Reset();
+            _name = name;
+            _surname = surname;
+            return this;
         }
 
-        public void Reset()
+        public ClientBuilder SetPassword(string password)
         {
-            this._client = new Client();
+            _password = password;
+            return this;
         }
 
-        public void BuildClient(string name, string password, string surname)
+        public ClientBuilder SetPasport(string pasport)
         {
-            _client.Name = name;
-            _client.Surname = surname;
-            _client.Password = password;
-        }
-
-        public void BuildPasport(string pasport)
-        {
-            _client.Pasport = pasport;
+            _pasport = pasport;
             if (pasport != null)
             {
-                _client.Status = "good";
+                _status = "good";
             }
+            else
+            {
+                _status = "bad";
+            }
+
+            return this;
         }
 
         public Client GetClient()
         {
-            Client result = this._client;
-            this.Reset();
-            return result;
+            return new Client(_name, _password, _surname, _pasport, _status);
         }
     }
 }

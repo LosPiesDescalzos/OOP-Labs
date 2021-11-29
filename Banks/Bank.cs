@@ -6,22 +6,23 @@ namespace Banks
     public class Bank
     {
         private static int _id;
-        public Bank()
+        public Bank(string name, double creditCommision, double debitPercent, List<DepositPercent> depositPercent, double debitMaxMoney)
         {
             Id = ++_id;
-            Name = null;
-            DebitPercent = 0;
-            DebitMaxMoney = 0;
-            CreditCommision = 0;
+            Name = name;
+            DebitPercent = debitPercent;
+            DebitMaxMoney = debitMaxMoney;
+            CreditCommision = creditCommision;
+            DepositPercents = depositPercent;
         }
 
-        public string Name { get; set; }
+        public string Name { get; }
         public int Id { get; }
         public double DebitPercent { get; set; }
-        public double DebitMaxMoney { get; set; }
+        public double DebitMaxMoney { get; }
         public List<DepositPercent> DepositPercents { get; set; }
         public double CreditCommision { get; set; }
-        public List<CanselTransaction> CanselTransactions { get; set; } = new List<CanselTransaction>();
+        public List<CancelTransaction> CancelTransactions { get; set; } = new List<CancelTransaction>();
         public List<Client> Clients { get; } = new List<Client>();
     }
 }
