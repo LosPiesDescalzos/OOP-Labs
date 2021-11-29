@@ -1,4 +1,5 @@
 using System;
+using Banks.Tools;
 
 namespace Banks.Accounts
 {
@@ -28,7 +29,7 @@ namespace Banks.Accounts
 
             if (Money < money)
             {
-                Console.WriteLine("У вас недостаточно средств");
+                throw new BankException("У вас недостаточно средств");
             }
 
             Console.WriteLine("Ваш баланс: {0}", Money);

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
+using Banks.Tools;
 
 namespace Banks.Accounts
 {
@@ -38,7 +38,7 @@ namespace Banks.Accounts
             }
             else
             {
-                Console.WriteLine("Вы можете снимать деньги только при истечении срока давности вашего счета");
+                throw new BankException("Вы можете снимать деньги только при истечении срока давности вашего счета");
             }
         }
     }

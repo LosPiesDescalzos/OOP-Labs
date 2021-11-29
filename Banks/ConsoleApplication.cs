@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Banks.Tools;
 
 namespace Banks
 {
@@ -220,7 +221,15 @@ namespace Banks
 
                             Console.WriteLine("Счет успешно добавлен!");
                         }
+                        else
+                        {
+                            Console.WriteLine("Такого клиента нет");
+                        }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Такого банка нет");
                 }
             }
         }
@@ -255,6 +264,10 @@ namespace Banks
                         CentralBank.ChangeDebitPercent(Bank, percent);
                         Console.WriteLine("Процент изменен. Теперь процент: {0}", Bank.DebitPercent);
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Такого банка нет");
                 }
             }
         }
@@ -305,9 +318,21 @@ namespace Banks
                                     double money = Convert.ToDouble(Console.ReadLine());
                                     acc.AddMoney(money);
                                 }
+                                else
+                                {
+                                    Console.WriteLine("Такого аккаунта нет");
+                                }
                             }
                         }
+                        else
+                        {
+                            throw new BankException("Неправильно введен пароль");
+                        }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Такого банка нет");
                 }
             }
         }
@@ -345,7 +370,7 @@ namespace Banks
                         }
                         else
                         {
-                            Console.WriteLine("Неверно введен пароль");
+                            throw new BankException("Неправильно введен пароль");
                         }
                     }
                 }
@@ -382,7 +407,15 @@ namespace Banks
                                 }
                             }
                         }
+                        else
+                        {
+                            throw new BankException("Неправильно введен пароль");
+                        }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Такого банка нет");
                 }
             }
         }
@@ -432,7 +465,15 @@ namespace Banks
                                 }
                             }
                         }
+                        else
+                        {
+                            throw new BankException("Неправильно введен пароль или имя");
+                        }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Такого банка нет");
                 }
             }
         }
@@ -472,7 +513,15 @@ namespace Banks
                                 }
                             }
                         }
+                        else
+                        {
+                            Console.WriteLine("Такого клиента нет");
+                        }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Такого банка нет");
                 }
             }
         }

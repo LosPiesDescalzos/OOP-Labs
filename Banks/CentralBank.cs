@@ -71,7 +71,6 @@ namespace Banks
         public Client AddClient(Bank bank, string name, string password, string surname, string passport)
         {
             var builder = new ClientBuilder();
-
             builder.SetNameSurname(name, surname).SetPassword(password).SetPasport(passport);
             Client client = builder.GetClient();
             bank.Clients.Add(client);
