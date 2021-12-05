@@ -74,6 +74,7 @@ namespace BackupsExtra.Tests
          {
              _backupManager.AddBackupJob();
 
+             
              _backupManager.BackupJob.GetRestorePoints().Add(point1);
              _backupManager.BackupJob.GetRestorePoints().Add(point2);
              _backupManager.BackupJob.GetRestorePoints().Add(point3);
