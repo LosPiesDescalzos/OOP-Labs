@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,20 +43,22 @@ namespace Backups
             }
         }
 
-        public void GoLocalBackup(IAlgorithm algorithm)
+        public void GoLocalBackup(IAlgorithm algorithm, DateTime dateTime)
         {
-            var restorePoint = new RestorePoint();
+            var restorePoint = new RestorePoint(dateTime);
             List<JobObject> jobObjects = BackupJob.JobObjects;
             List<Storage> storages = Repository.CreateLocalBackup(algorithm, jobObjects, restorePoint.Id);
+            restorePoint.Algorithm = algorithm;
             restorePoint.GetStorages().AddRange(storages);
             BackupJob.GetRestorePoints().Add(restorePoint);
         }
 
-        public void GoVirtualBackup(IAlgorithm algorithm)
+        public void GoVirtualBackup(IAlgorithm algorithm, DateTime dateTime)
         {
-            var restorePoint = new RestorePoint();
+            var restorePoint = new RestorePoint(dateTime);
             List<JobObject> jobObjects = BackupJob.JobObjects;
             List<Storage> storages = Repository.CreateVirtualBackup(algorithm, jobObjects, restorePoint.Id);
+            restorePoint.Algorithm = algorithm;
             restorePoint.GetStorages().AddRange(storages);
             BackupJob.GetRestorePoints().Add(restorePoint);
         }
