@@ -47,10 +47,12 @@ namespace Banks.Tests
                 string pasport2 = null;
                 
                 client = CentralBank.AddClient(bank, name, password, surname, pasport);
+                client.SetStatus();
                 client2 = CentralBank.AddClient(bank, name2, password2, surname2, pasport2);
+                client2.SetStatus();
                 
-                Assert.AreEqual( "good", client.Status);
-                Assert.AreEqual("bad", client2.Status);
+                Assert.IsTrue(client.Status);
+                Assert.IsFalse(client2.Status);
                 Assert.Contains(client, bank.Clients);
                 Assert.Contains(client2, bank.Clients);
             }

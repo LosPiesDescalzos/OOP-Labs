@@ -170,7 +170,7 @@ namespace Banks
                     Console.WriteLine("Придумате пароль");
                     string password = Console.ReadLine();
                     NewClient = CentralBank.AddClient(Bank, name, password, surname, passport);
-                    Console.WriteLine("Клиент успешно создан с именем: {0} и статусом: {1} ", NewClient.Name, NewClient.SetStatus(passport));
+                    Console.WriteLine("Клиент успешно создан с именем: {0} и статусом: {1} ", NewClient.Name, NewClient.SetStatus());
                 }
                 else
                 {

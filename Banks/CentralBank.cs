@@ -73,7 +73,7 @@ namespace Banks
             var builder = new ClientBuilder();
             builder.SetNameSurname(name, surname).SetPassword(password).SetPasport(passport);
             Client client = builder.GetClient();
-            client.SetStatus(passport);
+            client.SetStatus();
             bank.Clients.Add(client);
             return client;
         }
@@ -89,7 +89,7 @@ namespace Banks
                     {
                         if (client.Id == thisClient.Id)
                         {
-                            if (client.Status == "good")
+                            if (client.Status == true)
                             {
                                 account.MaxMoney = double.MaxValue;
                             }

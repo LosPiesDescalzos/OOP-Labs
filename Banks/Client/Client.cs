@@ -12,6 +12,7 @@ namespace Banks
             Password = password;
             Surname = surname;
             Pasport = pasport;
+            Status = SetStatus();
             Id = _id++;
         }
 
@@ -20,7 +21,7 @@ namespace Banks
         public string Password { get; set; }
         public string Surname { get; set; }
         public string Pasport { get; set; }
-        public string Status { get; set; }
+        public bool Status { get; set; }
         public List<Account> Accounts { get; } = new List<Account>();
         public List<string> Messages { get; } = new List<string>();
 
@@ -29,10 +30,10 @@ namespace Banks
             Messages.Add(message);
         }
 
-        public bool SetStatus(string pasport)
+        public bool SetStatus()
         {
             bool status = true;
-            if (pasport == null)
+            if (Pasport == null)
             {
                 status = false;
             }
