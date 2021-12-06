@@ -26,5 +26,15 @@ namespace BackupsExtra
                 Console.WriteLine("Job object's data has been saved to file");
             }
         }
+
+        public void SaveBackupJob(BackupJob job)
+        {
+            using (StreamWriter file = new StreamWriter("../../../jobObject.json"))
+            {
+                string json = JsonSerializer.Serialize<BackupJob>(job);
+                file.WriteLine(json);
+                Console.WriteLine("Backup job's data has been saved to file");
+            }
+        }
     }
 }

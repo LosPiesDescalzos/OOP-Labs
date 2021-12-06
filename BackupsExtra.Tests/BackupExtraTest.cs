@@ -11,7 +11,7 @@ namespace BackupsExtra.Tests
     {
         private BackupManager _backupManager = new BackupManager();
 
-        static DateTime date = new DateTime(2002, 10, 6);
+         static DateTime date = new DateTime(2002, 10, 6);
          Predicate _predicate = new Predicate(date, 2);
          Predicate _predicateNumber = new Predicate(4);
          Predicate _predicateDate = new Predicate(date);
@@ -73,7 +73,6 @@ namespace BackupsExtra.Tests
          public void ClearOnePredicate()
          {
              _backupManager.AddBackupJob();
-
              
              _backupManager.BackupJob.GetRestorePoints().Add(point1);
              _backupManager.BackupJob.GetRestorePoints().Add(point2);
@@ -83,7 +82,7 @@ namespace BackupsExtra.Tests
 
              List<RestorePoint> restorePoints = _backupManager.BackupJob.GetRestorePoints();
 
-             OnePredicateClear onePredicateClear = new OnePredicateClear();
+             ClearIfOnePredicate onePredicateClear = new ClearIfOnePredicate();
              onePredicateClear.Clear(_predicate, restorePoints);
              Assert.AreEqual(2, _backupManager.BackupJob.GetRestorePoints().Count);
          }
@@ -92,7 +91,6 @@ namespace BackupsExtra.Tests
          public void ClearTwoPredicate()
          { 
              _backupManager.AddBackupJob();
-
              _backupManager.BackupJob.GetRestorePoints().Add(point1);
              _backupManager.BackupJob.GetRestorePoints().Add(point2);
              _backupManager.BackupJob.GetRestorePoints().Add(point3);
@@ -101,7 +99,7 @@ namespace BackupsExtra.Tests
 
              List<RestorePoint> restorePoints = _backupManager.BackupJob.GetRestorePoints();
 
-             TwoPredicateClear twoPredicateClear = new TwoPredicateClear();
+             ClearIfTwoPredicate twoPredicateClear = new ClearIfTwoPredicate();
              twoPredicateClear.Clear(_predicate, restorePoints);
              Assert.AreEqual(3, _backupManager.BackupJob.GetRestorePoints().Count);
          }

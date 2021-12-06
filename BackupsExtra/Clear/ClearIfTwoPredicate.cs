@@ -5,7 +5,7 @@ using Backups;
 
 namespace BackupsExtra
 {
-    public class TwoPredicateClear : IClearPoint
+    public class ClearIfTwoPredicate : IClearPoint
     {
         public void Clear(Predicate predicate, List<RestorePoint> restorePoints)
         {
