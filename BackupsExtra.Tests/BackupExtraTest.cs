@@ -140,8 +140,8 @@ namespace BackupsExtra.Tests
                     countFiles += storage.JobObjects.Count;
                 }
             }
-            Assert.AreEqual(3,countStorages);
-            Assert.AreEqual(3,countFiles); 
+            Assert.AreEqual(2,countStorages);
+            Assert.AreEqual(2,countFiles); 
         }
         
     }
