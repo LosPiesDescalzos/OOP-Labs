@@ -7,12 +7,12 @@ namespace Reports.Server.Services
     public interface IReportService
     {
         void SerializeReport(List<Report> tasks);
-        public List<Report> DeSerializeReport();
+        List<Report> DeSerializeReport();
         Report Create(string description);
         void AddTaskToReport(Guid taskId, Guid reportId);
         void AddEmployeeToReport(Guid employeeId, Guid reportId);
         void SaveReport(Guid reportId); 
-        List<Report>FindClosedReports(Guid employeeId);
+        List<Report> FindClosedReports(Guid employeeId);
         List<Report> FindOpenReports(Guid employeeId);
         
 
